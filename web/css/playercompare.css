@@ -1,0 +1,34 @@
+#data {
+	margin-left: 1em;
+}
+.players {
+	margin-bottom: 15px;
+}
+table {
+	border-collapse: collapse;
+}
+th {
+  padding: 0px 15px;
+}
+tbody tr td {
+  border-top: 1pt solid #006322;
+  padding: 0px 3px;
+}
+
+.centered {
+	text-align: center;
+}
+.right {
+	text-align: right;
+}
+.color div {
+	width: 20px;
+	height: 15px;
+	margin: 2px;
+}
+
+#chart {
+	margin-top: 1em;
+	height: 250px;
+	width: 95%;
+}

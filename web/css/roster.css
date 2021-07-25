@@ -1,0 +1,29 @@
+#data {
+	margin-left: 1em;
+}
+table {
+	border-collapse: collapse;
+}
+th {
+  padding: 0px 15px;
+}
+tbody tr td {
+  border-top: 1pt solid #006322;
+  padding: 0px 3px;
+}
+
+.centered {
+	text-align: center;
+}
+.right {
+	text-align: right;
+}
+.name {
+	font-weight: bold;
+}
+
+#chart {
+	margin-top: 1em;
+	height: 250px;
+	width: 100%;
+}

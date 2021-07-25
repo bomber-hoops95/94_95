@@ -1,0 +1,125 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <title>RHS</title>
+    <link rel="shortcut icon" href="img/favicon.ico" />
+    <link rel="icon" href="img/favicon.ico">
+    
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link href="css/style.css" rel="stylesheet" />
+	<link href="css/roster.css" rel="stylesheet" />
+	
+	<link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="lib/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="css/bootstrap-custom.css" rel="stylesheet" />
+        
+    <script type="text/javascript" src="lib/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="lib/knockout-3.4.2.js"></script>
+	<script type="text/javascript" src="lib/knockout.mapping.js"></script>
+	<script type="text/javascript" src="lib/bootstrap/js/bootstrap.min.js"></script>
+	
+	<script type="text/javascript" src="js/helpers.js"></script>
+	<script type="text/javascript" src="js/nav.js"></script>
+	
+<script type="text/javascript">
+$(function() {
+	//Here's my data model
+	var viewModel = {
+		players: null,
+		errorInfo: ko.observable('')
+	};
+	 
+	refreshData(viewModel);
+});
+
+function refreshData(viewModel) {
+	$.getJSON("json/players.json", function(players) {
+		$('#error').hide();
+		$('#data').show();
+		
+		$.each(players, function(idx, p) {
+			var fullName = p.firstName + ' ' + p.lastName;
+			p.statsUrl = $.buildParamUrl('cumulative.html',
+				{
+					n: fullName,
+					g: p.gamesUrl,
+					c: p.cumulativeUrl,
+					t: 'p'
+				});
+			p.averagesUrl = $.buildParamUrl('playeraves.html',
+				{
+					n: fullName,
+					a: p.averagesUrl
+				});
+		});
+		
+		viewModel.players = players;
+		ko.applyBindings(viewModel);
+	})
+	.fail(function(jqxhr, textStatus, error ) {
+	    
+		$('#data').hide();
+		$('#error').show();
+		
+		viewModel.errorInfo("Status " + jqxhr.status + ": " + error);
+		ko.applyBindings(viewModel);
+	});
+}
+</script>
+
+</head>
+<body>
+	<nav class="navbar navbar-green navbar-fixed-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="pull-left navbar-toggle navbar-left" data-toggle="collapse" data-target="#navbarLinks">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+			</div>
+			<div id="navbarLinks" class="collapse navbar-collapse">
+				<ul id="navbarList" class="nav navbar-nav">
+				</ul>
+			</div>
+		</div>
+	</nav>
+	
+	<div id="data">
+		<div class="pageTitle">Roster</div>
+		<table>
+			<thead>
+				<tr>
+					<th>NAME</th>
+					<th>NUMBER</th>
+					<th>HEIGHT</th>
+					<th>GRADE</th>
+					<th>&nbsp;</th>
+				</tr>
+			</thead>
+			<tbody data-bind="foreach: players">
+				<tr>
+					<td class="name" data-bind="text: firstName + ' ' + lastName"></td>
+					<td class="centered" data-bind="text: number"></td>
+					<td class="centered" data-bind="text: height"></td>
+					<td data-bind="text: grade"></td>
+					<td class="centered">
+						<a data-bind="attr: { href: statsUrl}">Stats</a>
+					</td>
+					<td class="centered">
+						<a data-bind="attr: { href: averagesUrl}">Averages</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<br><br>
+		
+		<img src="img/team.png" width="600" alt="Team photo">
+	</div>
+	<div id="error" data-bind="text: errorInfo">
+	</div>
+</body>
+</html>

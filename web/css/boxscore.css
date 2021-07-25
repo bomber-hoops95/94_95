@@ -1,0 +1,66 @@
+#teamScore {
+	text-align: center;
+	font-size: 28pt;
+	color: #006322;
+	margin: 0px;
+}
+
+#teamScore h1 {
+	margin: 0px 0px 10px 0px;
+}
+
+.centered {
+	text-align: center;
+}
+.right {
+	text-align: right;
+}
+.name {
+	font-weight: bold;
+}
+
+table {
+	border-collapse: collapse;
+}
+th {
+  padding: 0px 15px;
+}
+tbody tr td {
+  border-top: 1pt solid #006322;
+  padding: 0px 3px;
+}
+tfoot tr {
+}
+tfoot tr td {
+	padding-top: 6pt;
+	border-top: 2pt solid #006322;
+}
+
+.gameDate {
+	font-size: 24pt;
+	margin-top: 3px;
+	margin-bottom: 0px;
+}
+
+#gameFlow {
+	margin-top: 1em;
+}
+#chart {
+	height: 250px;
+	width: 95%;
+}
+#flowTable {
+	margin-top: 1em;
+	margin-left: 2em;
+}
+#flowTable td {
+	padding: 0px 12px;
+}
+#flowTable .name {
+	font-weight: normal;
+	font-style: italic;
+}
+.eoq div {
+	padding: 5px 0px;
+	text-align: center;
+}

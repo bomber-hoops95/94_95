@@ -1,0 +1,134 @@
+[
+   {
+      "number" : "40/41",
+      "height" : "6' 1\"",
+      "lastName" : "Ash",
+      "firstName" : "Damien",
+      "averagesUrl" : "players/average/ash.json",
+      "gamesUrl" : "players/games/ash.json",
+      "weight" : null,
+      "grade" : "Senior",
+      "cumulativeUrl" : "players/cumulative/ash.json"
+   },
+   {
+      "firstName" : "Mark",
+      "number" : "22/23",
+      "height" : "5' 11\"",
+      "lastName" : "Bone",
+      "weight" : null,
+      "cumulativeUrl" : "players/cumulative/bone.json",
+      "grade" : "Senior",
+      "averagesUrl" : "players/average/bone.json",
+      "gamesUrl" : "players/games/bone.json"
+   },
+   {
+      "gamesUrl" : "players/games/buck.json",
+      "averagesUrl" : "players/average/buck.json",
+      "cumulativeUrl" : "players/cumulative/buck.json",
+      "grade" : "Senior",
+      "weight" : null,
+      "lastName" : "Buck",
+      "height" : "6' 1\"",
+      "number" : "12/13",
+      "firstName" : "Aric"
+   },
+   {
+      "firstName" : "Jeff",
+      "lastName" : "Cahill",
+      "number" : "44/45",
+      "height" : "6' 1\"",
+      "weight" : null,
+      "cumulativeUrl" : "players/cumulative/cahill.json",
+      "grade" : "Senior",
+      "gamesUrl" : "players/games/cahill.json",
+      "averagesUrl" : "players/average/cahill.json"
+   },
+   {
+      "lastName" : "Coleman",
+      "number" : "50/51",
+      "height" : "6' 5\"",
+      "firstName" : "Andrew",
+      "gamesUrl" : "players/games/coleman.json",
+      "averagesUrl" : "players/average/coleman.json",
+      "weight" : null,
+      "grade" : "Sophmore",
+      "cumulativeUrl" : "players/cumulative/coleman.json"
+   },
+   {
+      "lastName" : "Merkley",
+      "height" : "6' 1\"",
+      "number" : "54/55",
+      "firstName" : "Todd",
+      "gamesUrl" : "players/games/merkley.json",
+      "averagesUrl" : "players/average/merkley.json",
+      "cumulativeUrl" : "players/cumulative/merkley.json",
+      "grade" : "Freshmen",
+      "weight" : null
+   },
+   {
+      "weight" : null,
+      "grade" : "Sophmore",
+      "cumulativeUrl" : "players/cumulative/mitchell.json",
+      "averagesUrl" : "players/average/mitchell.json",
+      "gamesUrl" : "players/games/mitchell.json",
+      "firstName" : "Jared",
+      "number" : "24/25",
+      "height" : "5' 11\"",
+      "lastName" : "Mitchell"
+   },
+   {
+      "firstName" : "Nkere",
+      "lastName" : "Reed",
+      "number" : "30/31",
+      "height" : "5' 7\"",
+      "weight" : null,
+      "grade" : "Senior",
+      "cumulativeUrl" : "players/cumulative/reed.json",
+      "gamesUrl" : "players/games/reed.json",
+      "averagesUrl" : "players/average/reed.json"
+   },
+   {
+      "lastName" : "Robertson",
+      "number" : "32/33",
+      "height" : "5' 8\"",
+      "firstName" : "Neal",
+      "gamesUrl" : "players/games/robertson.json",
+      "averagesUrl" : "players/average/robertson.json",
+      "weight" : null,
+      "cumulativeUrl" : "players/cumulative/robertson.json",
+      "grade" : "Junior"
+   },
+   {
+      "averagesUrl" : "players/average/schulz.json",
+      "gamesUrl" : "players/games/schulz.json",
+      "weight" : null,
+      "cumulativeUrl" : "players/cumulative/schulz.json",
+      "grade" : "Senior",
+      "number" : "34/35",
+      "height" : "6' 5\"",
+      "lastName" : "Schulz",
+      "firstName" : "Doug"
+   },
+   {
+      "weight" : null,
+      "cumulativeUrl" : "players/cumulative/siefken.json",
+      "grade" : "Senior",
+      "averagesUrl" : "players/average/siefken.json",
+      "gamesUrl" : "players/games/siefken.json",
+      "firstName" : "Aaron",
+      "number" : "20/21",
+      "height" : "5' 8\"",
+      "lastName" : "Siefken"
+   },
+   {
+      "weight" : null,
+      "cumulativeUrl" : "players/cumulative/spohr.json",
+      "grade" : "Senior",
+      "averagesUrl" : "players/average/spohr.json",
+      "gamesUrl" : "players/games/spohr.json",
+      "firstName" : "Jon",
+      "number" : "10/11",
+      "height" : "6'",
+      "lastName" : "Spohr"
+   }
+]

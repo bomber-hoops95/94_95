@@ -1,0 +1,376 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <title>RHS</title>
+    <link rel="shortcut icon" href="img/favicon.ico" />
+    <link rel="icon" href="img/favicon.ico">
+    
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link href="css/style.css" rel="stylesheet" />
+	<link href="css/boxscore.css" rel="stylesheet" />
+	
+	<link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="lib/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="css/bootstrap-custom.css" rel="stylesheet" />
+        
+    <script type="text/javascript" src="lib/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="lib/knockout-3.4.2.js"></script>
+	<script type="text/javascript" src="lib/knockout.mapping.js"></script>
+    <script type="text/javascript" src="lib/flotr2.min.js"></script>
+	<script type="text/javascript" src="lib/bootstrap/js/bootstrap.min.js"></script>
+	
+	<script type="text/javascript" src="js/helpers.js"></script>
+	<script type="text/javascript" src="js/nav.js"></script>
+	
+<script type="text/javascript">
+$(function() {
+	//Here's my data model
+	var viewModel = {
+		info: null,
+		rawFlow: null,
+		flow: null,
+		flowFinal: null,
+		errorInfo: ko.observable('')
+	};
+	 
+	loadGameData(viewModel);
+});
+
+function loadGameData(viewModel) {
+	var gameNum = parseInt($.urlParam('gameNum'));
+	if(gameNum < 10) {
+		gameNum = '0' + gameNum;
+	}
+	
+	$.getJSON('json/games/game' + gameNum + '.json', function(game) {
+		$('#error').hide();
+		$('#data').show();
+		
+		game.players.sort(playerStatCompareDesc);
+		viewModel.info = ko.mapping.fromJS(game);
+		if(game.gameFlowUrl) {
+			loadGameFlowData(viewModel, game, game.gameFlowUrl);
+		}
+		else {
+			ko.applyBindings(viewModel);
+		}
+	})
+	.fail(function(jqxhr, textStatus, error ) {
+	    
+		$('#data').hide();
+		$('#error').show();
+		
+		viewModel.errorInfo("Status " + jqxhr.status + ": " + error);
+		ko.applyBindings(viewModel);
+	});
+}
+
+function loadGameFlowData(viewModel, game, flowUrl) {
+	$.getJSON('json/' + flowUrl, function(flow) {
+		viewModel.rawFlow = flow;
+		viewModel.flow = [];
+		(function renderFlow(container) {
+			var options = {
+				bubbles: {
+					show: true,
+					baseRadius: 5
+				},
+				mouse : {
+					track : true,
+					relative: true,
+					trackFormatter: function(obj) {
+						if(obj.series.points.show) {
+							return;
+						}
+						
+						var f = (obj.series.label == 'OPP')
+							? viewModel.rawFlow.scoresAgainst
+							: viewModel.rawFlow.scoresFor;
+						var n = '';
+						var s = false;
+						for(var i = 0; i < f.length; i++) {
+							if(f[i].totalSeconds == obj.x && f[i].score === obj.y) {
+								if(f[i].name) {
+									n = ' - ' + f[i].name;
+								}
+								s = true;
+								break;
+							}
+						}
+						
+						return s ? obj.y + n : null;
+					}
+				},
+				xaxis: {
+					ticks: [[0, 'Q1'], [480, 'Q2'], [960, 'Q3'], [1440, 'Q4']]
+				},
+				yaxis: {
+					min: 0,
+					max: 1.1 * Math.max(game.teamTotals.pointsTotal, game.opponentScore)
+				},
+				HtmlText: true,
+				colors: ['#cccccc', '#cccccc', '#006322', '#006322']
+			};
+			var data = [
+				{
+					label: 'OPP',
+					data: createFlowSet(flow.scoresAgainst),
+					lines: { show: true },
+					points: { show: false }
+				},
+				{
+					data: createFlowSetDots(flow.scoresAgainst),
+					lines: { show: false },
+					points: { show: true }
+				},
+				{
+					label: 'RHS',
+					data: createFlowSet(flow.scoresFor),
+					lines: { show: true },
+					points: { show: false }
+				},
+				{
+					data: createFlowSetDots(flow.scoresFor),
+					lines: { show: false },
+					points: { show: true }
+				}
+			];
+			
+			var last = data[0].data[data[0].data.length - 1];
+			for(var i = 5; i <= last.quarter; i++) {
+				options.xaxis.ticks.push([options.xaxis.ticks[i-2][0] + (5 * 60), 'OT' + (i-4)]);
+			}
+			
+			Flotr.draw(container, data, options);
+		})(document.getElementById('chart'));
+		
+		addFlow(viewModel, flow.scoresFor, false, true);
+		addFlow(viewModel, flow.scoresAgainst, true, false);
+		setFlowFinal(viewModel, flow.scoresFor, flow.scoresAgainst);
+		viewModel.flow.sort(flowTimeCompare);
+		ko.applyBindings(viewModel);
+	})
+	.fail(function(jqxhr, textStatus, error ) {
+	});
+}
+
+function createFlowSet(flow) {
+	var set = [];
+	var prevScore = 0;
+	
+	set.push([0, 0]);
+	$.each(flow, function(idx, val) {
+		set.push([val.totalSeconds, prevScore]);
+		set.push([val.totalSeconds, val.score]);
+		lq = val.quarter;
+		prevScore = val.score;
+	});
+	
+	return set;
+}
+
+function createFlowSetDots(flow) {
+	var set = [];
+	
+	set.push([0, 0]);
+	$.each(flow, function(idx, val) {
+		set.push([val.totalSeconds, val.score]);
+		lq = val.quarter;
+	});
+	
+	return set;
+}
+
+function addFlow(viewModel, flow, isOpp, addQuarters) {
+	var lq = null;
+	
+	$.each(flow, function(idx, val) {
+		if(idx >= flow.length -1) {
+			return;
+		}
+		if(addQuarters && lq != null && lq != val.quarter) {
+			viewModel.flow.push({
+				ts: lq * 8 * 60
+			});
+		}
+		
+		viewModel.flow.push({
+			q: val.quarter,
+			tr: val.timeRemaining,
+			ts: val.totalSeconds,
+			s: (isOpp ? null : val.score),
+			n: (isOpp ? null : val.name),
+			os: (isOpp ? val.score : null),
+			on: (isOpp ? val.name : null)
+		});
+		lq = val.quarter;
+	});
+}
+
+function setFlowFinal(viewModel, scoresFor, scoresAgainst) {
+	var f = scoresFor[scoresFor.length-1];
+	var a = scoresAgainst[scoresAgainst.length-1];
+	viewModel.flowFinal = {
+		q: Math.max(f.quarter, a.quarter),
+		tr: '0:00',
+		ts: 1000000,
+		s: f.score,
+		n: null,
+		os: a.score,
+		on: null
+	};
+}
+
+function playerStatCompareDesc(a, b) {
+	if(parseInt(a.pointsTotal) > parseInt(b.pointsTotal)) {
+		return -1;
+	}
+	else if(parseInt(a.pointsTotal) < parseInt(b.pointsTotal)) {
+		return 1;
+	}
+	
+	if(a.name < b.name) {
+		return -1;
+	}
+	else if(a.name > b.name) {
+		return 1;
+	}
+	return 0;
+}
+
+function flowTimeCompare(a, b) {
+	return a.ts - b.ts;
+}
+
+</script>
+<style>
+	#container {
+		display: table;
+		width: 1280px;
+		height: 720px;
+	}
+	#gameFlow {
+		display: table-cell;
+		text-align: center;
+		vertical-align: middle;
+		
+		padding-top: 30px;
+		padding-left: 35px;
+		padding-bottom: 30px;
+		margin-left: 30px;
+		width: 1220px;
+	}
+</style>
+</head>
+<body>
+	<nav class="navbar navbar-green navbar-fixed-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="pull-left navbar-toggle navbar-left" data-toggle="collapse" data-target="#navbarLinks">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+			</div>
+			<div id="navbarLinks" class="collapse navbar-collapse">
+				<ul id="navbarList" class="nav navbar-nav">
+				</ul>
+			</div>
+		</div>
+	</nav>
+	
+	<div id="data">
+		<div id="container">
+			<div id="gameFlow" data-bind="visible: flow != null">
+				<h1 style="text-align: center">
+					<span data-bind="text: info.teamTotals.pointsTotal"></span> -
+					<span data-bind="text: info.opponentScore"></span>
+					(<span data-bind="text: info.winLoss"></span>)
+				</h1>
+				<br>
+				<div id="chart"></div>
+
+				<br>
+				<table style="width: 1200px;">
+					<thead>
+						<tr>
+							<th class="left">Player</th>
+							<th class="right">2PT</th>
+							<th class="right">2PT %</th>
+							<th class="right">3PT</th>
+							<th class="right">3PT %</th>
+							<th class="right">FG %</th>
+							<th class="right">FT</th>
+							<th class="right">FT %</th>
+							<th class="right">OREB</th>
+							<th class="right">DREB</th>
+							<th class="right">REB</th>
+							<th class="right">AST</th>
+							<th class="right">STL</th>
+							<th class="right">BLK</th>
+							<th class="right">TO</th>
+							<th class="right">PF</th>
+							<th class="right">PT</th>
+						</tr>
+					</thead>
+					<tbody data-bind="foreach: info.players">
+						<tr>
+							<td class="name" data-bind="text: name"></td>
+							<td class="centered" data-bind="text: made2Pt() + '-' + attempted2Pt()"></td>
+							<td class="right" data-bind="text: percent2Pt"></td>
+							<td class="centered" data-bind="text: made3Pt() + '-' + attempted3Pt()"></td>
+							<td class="right" data-bind="text: percent3Pt"></td>
+							<td class="right" data-bind="text: percentTotal"></td>
+							<td class="centered" data-bind="text: madeFt() + '-' + attemptedFt()"></td>
+							<td class="right" data-bind="text: percentFt"></td>
+							<td class="right" data-bind="text: offRebounds"></td>
+							<td class="right" data-bind="text: defRebounds"></td>
+							<td class="right" data-bind="text: reboundsTotal"></td>
+							<td class="right" data-bind="text: assists"></td>
+							<td class="right" data-bind="text: steals"></td>
+							<td class="right" data-bind="text: blocks"></td>
+							<td class="right" data-bind="text: turnovers"></td>
+							<td class="right" data-bind="text: fouls"></td>
+							<td class="right" data-bind="text: pointsTotal"></td>
+						</tr>
+					</tbody>
+					<tfoot data-bind="with: info.teamTotals">
+						<tr>
+							<td class="name" data-bind="text: name"></td>
+							<td class="centered" data-bind="text: made2Pt() + '-' + attempted2Pt()"></td>
+							<td class="right" data-bind="text: percent2Pt"></td>
+							<td class="centered" data-bind="text: made3Pt() + '-' + attempted3Pt()"></td>
+							<td class="right" data-bind="text: percent3Pt"></td>
+							<td class="right" data-bind="text: percentTotal"></td>
+							<td class="centered" data-bind="text: madeFt() + '-' + attemptedFt()"></td>
+							<td class="right" data-bind="text: percentFt"></td>
+							<td class="right" data-bind="text: offRebounds"></td>
+							<td class="right" data-bind="text: defRebounds"></td>
+							<td class="right" data-bind="text: reboundsTotal"></td>
+							<td class="right" data-bind="text: assists"></td>
+							<td class="right" data-bind="text: steals"></td>
+							<td class="right" data-bind="text: blocks"></td>
+							<td class="right" data-bind="text: turnovers"></td>
+							<td class="right" data-bind="text: fouls"></td>
+							<td class="right" data-bind="text: pointsTotal"></td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<br><br>
+	<div>
+		<div>Richland Bombers vs. <span data-bind="text: info.opponent"></div>
+		<div>
+			<div data-bind="text: info.location() + ' - ' + info.date()"></div>
+		</div>
+	</div>
+
+	<div id="error" data-bind="text: errorInfo">
+	</div>
+</body>
+</html>

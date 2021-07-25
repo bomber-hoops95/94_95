@@ -1,0 +1,323 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <title>RHS</title>
+    <link rel="shortcut icon" href="img/favicon.ico" />
+    <link rel="icon" href="img/favicon.ico">
+    
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link href="css/style.css" rel="stylesheet" />
+	<link href="css/cumulative.css" rel="stylesheet" />
+	
+	<link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="lib/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="css/bootstrap-custom.css" rel="stylesheet" />
+        
+    <script type="text/javascript" src="lib/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="lib/knockout-3.4.2.js"></script>
+	<script type="text/javascript" src="lib/knockout.mapping.js"></script>
+    <script type="text/javascript" src="lib/flotr2.min.js"></script>
+	<script type="text/javascript" src="lib/bootstrap/js/bootstrap.min.js"></script>
+	
+	<script type="text/javascript" src="js/helpers.js"></script>
+	<script type="text/javascript" src="js/nav.js"></script>
+	
+<script type="text/javascript">
+$(function() {
+	//Here's my data model
+	var chartProps = [
+		{ name: '2PT %', gameProp: 'percent2Pt', cmltvProp: 'percent2Pt' },
+		{ name: '3PT %', gameProp: 'percent3Pt', cmltvProp: 'percent3Pt' },
+		{ name: 'FG %', gameProp: 'percentTotal', cmltvProp: 'percentTotal' },
+		{ name: 'FT %', gameProp: 'percentFt', cmltvProp: 'percentFt' },
+		{ name: 'OREB', gameProp: 'offRebounds', cmltvProp: 'averages.aveOffRebounds' },
+		{ name: 'DREB', gameProp: 'defRebounds', cmltvProp: 'averages.aveDefRebounds' },
+		{ name: 'REB', gameProp: 'reboundsTotal', cmltvProp: 'averages.aveRebounds' },
+		{ name: 'AST', gameProp: 'assists', cmltvProp: 'averages.aveAssists' },
+		{ name: 'STL', gameProp: 'steals', cmltvProp: 'averages.aveSteals' },
+		{ name: 'BLK', gameProp: 'blocks', cmltvProp: 'averages.aveBlocks' },
+		{ name: 'TO', gameProp: 'turnovers', cmltvProp: 'averages.aveTurnovers' },
+		{ name: 'PF', gameProp: 'fouls', cmltvProp: 'averages.aveFouls' },
+		{ name: 'PT', gameProp: 'pointsTotal', cmltvProp: 'averages.avePoints' }
+	];
+	var viewModel = {
+		title: null,
+		games: null,
+		cumulative: null,
+		chartProps: chartProps,
+		selectedChartProp: ko.observable(chartProps[0]),
+		errorInfo: ko.observable('')
+	};
+	
+	viewModel.selectedChartProp.subscribe(function(newValue) {
+		refreshChart(viewModel);
+	});
+	
+	loadData(viewModel);
+});
+
+function loadData(viewModel) {
+	var fullName = decodeURIComponent($.urlParam('n'));
+	var gamesJson = decodeURIComponent($.urlParam('g'));
+	var cumulativeJson = decodeURIComponent($.urlParam('c'));
+	var type = $.urlParam('t');
+	$.getJSON("json/" + gamesJson, function(games) {		
+		$.getJSON("json/" + cumulativeJson, function(cmltv) {
+			$('#error').hide();
+			$('#data').show();
+			finish(viewModel, games, cmltv, type, fullName);
+		})
+		.fail(function (jqxhr, textStatus, error ) {
+			getFailed(viewModel, jqxhr, textStatus, error);
+		});
+	})
+	.fail(function (jqxhr, textStatus, error ) {
+		getFailed(viewModel, jqxhr, textStatus, error);
+	});
+}
+
+function getFailed(viewModel, jqxhr, textStatus, error) {
+	$('#data').hide();
+	$('#error').show();
+	
+	viewModel.errorInfo("Status " + jqxhr.status + ": " + error);
+	ko.applyBindings(viewModel);
+}
+
+function finish(viewModel, games, cmltv, type, fullName) {
+	viewModel.title = (type === 't')
+		? 'Team Season Statistics'
+		: 'Statistics for ' + fullName;
+	viewModel.games = games.stats;
+	viewModel.cumulative = cmltv.stats;
+	refreshChart(viewModel);
+	ko.applyBindings(viewModel);
+}
+
+function refreshChart(viewModel) {
+	var options = {
+		bubbles: {
+			show: true,
+			baseRadius: 5
+		},
+		mouse : {
+			track : true,
+			relative: true,
+			trackFormatter: function(obj) {
+				return obj.y + ' - ' + viewModel.games[obj.index].opponent;
+			}
+		},
+		xaxis: {
+			min: 0,
+			max: 0
+		},
+		yaxis: {
+			min: 0,
+			max: 0
+		},
+		HtmlText: true,
+		colors: ['#006322', '#cccccc']
+	};
+	var data = [
+		{
+			data: [],
+			label: 'Per Game',
+			lines: {
+				show: true
+			},
+			points: {
+				show: true
+			}
+		},
+		{
+			data: [],
+			label: 'Cumulative',
+			lines: {
+				show: true
+			},
+			points: {
+				show: true
+			}
+		}
+	];
+	
+	var miny = 10000;
+	var maxy = -10000;
+	var chartProps = viewModel.selectedChartProp();
+	$.each(viewModel.games, function(idx, g) {
+		var v = $.getObjValue(g, chartProps.gameProp);
+		miny = Math.min(miny, v);
+		maxy = Math.max(maxy, v);
+		data[0].data.push([g.gameNumber, v]);
+	});
+	$.each(viewModel.cumulative, function(idx, c) {
+		var v = $.getObjValue(c, chartProps.cmltvProp);
+		miny = Math.min(miny, v);
+		maxy = Math.max(maxy, v);
+		data[1].data.push([c.gameNumber, v]);
+	});
+	options.xaxis.max = data[0].data.length + 1;
+	options.yaxis.min = 0.9 * miny;
+	options.yaxis.max = 1.1 * maxy;
+	
+	(function renderChart(container) {
+		Flotr.draw(container, data, options);
+	})(document.getElementById('chart'));
+}
+</script>
+
+</head>
+<body>
+	<nav class="navbar navbar-green navbar-fixed-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="pull-left navbar-toggle navbar-left" data-toggle="collapse" data-target="#navbarLinks">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+			</div>
+			<div id="navbarLinks" class="collapse navbar-collapse">
+				<ul id="navbarList" class="nav navbar-nav">
+				</ul>
+			</div>
+		</div>
+	</nav>
+	
+	<div id="data">
+		<div class="pageTitle" data-bind="text: title"></div>
+		<div>
+			<h3>Per Game Statistics</h3>
+			<table>
+				<thead>
+					<tr>
+						<th>OPP</th>
+						<th>2PT</th>
+						<th>2PT %</th>
+						<th>3PT</th>
+						<th>3PT %</th>
+						<th>FG %</th>
+						<th>FT</th>
+						<th>FT %</th>
+						<th>OREB</th>
+						<th>DREB</th>
+						<th>REB</th>
+						<th>AST</th>
+						<th>STL</th>
+						<th>BLK</th>
+						<th>TO</th>
+						<th>PF</th>
+						<th>PT</th>
+					</tr>
+				</thead>
+				<tbody data-bind="foreach: games">
+					<tr>
+						<td class="name" data-bind="text: opponent"></td>
+						<td class="centered" data-bind="text: made2Pt + '-' + attempted2Pt"></td>
+						<td class="right" data-bind="text: percent2Pt"></td>
+						<td class="centered" data-bind="text: made3Pt + '-' + attempted3Pt"></td>
+						<td class="right" data-bind="text: percent3Pt"></td>
+						<td class="right" data-bind="text: percentTotal"></td>
+						<td class="centered" data-bind="text: madeFt + '-' + attemptedFt"></td>
+						<td class="right" data-bind="text: percentFt"></td>
+						<td class="right" data-bind="text: offRebounds"></td>
+						<td class="right" data-bind="text: defRebounds"></td>
+						<td class="right" data-bind="text: reboundsTotal"></td>
+						<td class="right" data-bind="text: assists"></td>
+						<td class="right" data-bind="text: steals"></td>
+						<td class="right" data-bind="text: blocks"></td>
+						<td class="right" data-bind="text: turnovers"></td>
+						<td class="right" data-bind="text: fouls"></td>
+						<td class="right" data-bind="text: pointsTotal"></td>
+					</tr>
+				</tbody>
+			</table>
+			
+			<hr style="margin: 15px 0px">
+			
+			<h3>Cumulative Statistics</h3>
+			<table>
+				<thead>
+					<tr>
+						<th colspan="17">&nbsp;</th>
+						<th>&nbsp;</th>
+						<th colspan="9">AVERAGES</th>
+					</tr>
+					<tr>
+						<th>OPP</th>
+						<th>2PT</th>
+						<th>2PT %</th>
+						<th>3PT</th>
+						<th>3PT %</th>
+						<th>FG %</th>
+						<th>FT</th>
+						<th>FT %</th>
+						<th>OREB</th>
+						<th>DREB</th>
+						<th>REB</th>
+						<th>AST</th>
+						<th>STL</th>
+						<th>BLK</th>
+						<th>TO</th>
+						<th>PF</th>
+						<th>PT</th>
+						<th>&nbsp;</th>
+						<th>OREB</th>
+						<th>DREB</th>
+						<th>REB</th>
+						<th>AST</th>
+						<th>STL</th>
+						<th>BLK</th>
+						<th>TO</th>
+						<th>PF</th>
+						<th>PT</th>
+					</tr>
+				</thead>
+				<tbody data-bind="foreach: cumulative">
+					<tr>
+						<td class="name" data-bind="text: opponent"></td>
+						<td class="centered" data-bind="text: made2Pt + '-' + attempted2Pt"></td>
+						<td class="right" data-bind="text: percent2Pt"></td>
+						<td class="centered" data-bind="text: made3Pt + '-' + attempted3Pt"></td>
+						<td class="right" data-bind="text: percent3Pt"></td>
+						<td class="right" data-bind="text: percentTotal"></td>
+						<td class="centered" data-bind="text: madeFt + '-' + attemptedFt"></td>
+						<td class="right" data-bind="text: percentFt"></td>
+						<td class="right" data-bind="text: offRebounds"></td>
+						<td class="right" data-bind="text: defRebounds"></td>
+						<td class="right" data-bind="text: reboundsTotal"></td>
+						<td class="right" data-bind="text: assists"></td>
+						<td class="right" data-bind="text: steals"></td>
+						<td class="right" data-bind="text: blocks"></td>
+						<td class="right" data-bind="text: turnovers"></td>
+						<td class="right" data-bind="text: fouls"></td>
+						<td class="right" data-bind="text: pointsTotal"></td>
+						<td>&nbsp;</td>
+						<td class="right" data-bind="text: averages.aveOffRebounds"></td>
+						<td class="right" data-bind="text: averages.aveDefRebounds"></td>
+						<td class="right" data-bind="text: averages.aveRebounds"></td>
+						<td class="right" data-bind="text: averages.aveAssists"></td>
+						<td class="right" data-bind="text: averages.aveSteals"></td>
+						<td class="right" data-bind="text: averages.aveBlocks"></td>
+						<td class="right" data-bind="text: averages.aveTurnovers"></td>
+						<td class="right" data-bind="text: averages.aveFouls"></td>
+						<td class="right" data-bind="text: averages.avePoints"></td>
+					</tr>
+				</tbody>
+			</table>
+			
+			<hr style="margin: 15px 0px">
+			
+			<h3>Season Trends</h3>
+			<div>
+				<select style="width: 100px" data-bind="options: chartProps, optionsText: 'name', value: selectedChartProp">
+				</select>
+				<div id="chart"></div>
+			</div>
+		</div>
+	<div id="error" data-bind="text: errorInfo">
+	</div>
+</body>
+</html>

@@ -1,0 +1,267 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <title>RHS</title>
+    <link rel="shortcut icon" href="img/favicon.ico" />
+    <link rel="icon" href="img/favicon.ico">
+    
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link href="css/style.css" rel="stylesheet" />
+	<link href="css/playercompare.css" rel="stylesheet" />
+	
+	<link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="lib/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="css/bootstrap-custom.css" rel="stylesheet" />
+        
+    <script type="text/javascript" src="lib/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="lib/knockout-3.4.2.js"></script>
+	<script type="text/javascript" src="lib/knockout.mapping.js"></script>
+    <script type="text/javascript" src="lib/flotr2.min.js"></script>
+	<script type="text/javascript" src="lib/bootstrap/js/bootstrap.min.js"></script>
+	
+	<script type="text/javascript" src="js/helpers.js"></script>
+	<script type="text/javascript" src="js/nav.js"></script>
+	
+<script type="text/javascript">
+var colors = [
+	'#047e00',
+	'#0000ff',
+	'#7e007e',
+	'#06ff04',
+	'#fe00ff',
+	'#047e7e',
+	'#ffff04',
+	'#7e7e7e',
+	'#06ffff',
+	'#fe0000',
+	'#00007e',
+	'#fe7e00'
+];
+var chartProps = [
+	{ name: '2PT %', gameProp: 'percent2Pt', cmltvProp: 'percent2Pt' },
+	{ name: '3PT %', gameProp: 'percent3Pt', cmltvProp: 'percent3Pt' },
+	{ name: 'FG %', gameProp: 'percentTotal', cmltvProp: 'percentTotal' },
+	{ name: 'FT %', gameProp: 'percentFt', cmltvProp: 'percentFt' },
+	{ name: 'OREB', gameProp: 'offRebounds', cmltvProp: 'averages.aveOffRebounds' },
+	{ name: 'DREB', gameProp: 'defRebounds', cmltvProp: 'averages.aveDefRebounds' },
+	{ name: 'REB', gameProp: 'reboundsTotal', cmltvProp: 'averages.aveRebounds' },
+	{ name: 'AST', gameProp: 'assists', cmltvProp: 'averages.aveAssists' },
+	{ name: 'STL', gameProp: 'steals', cmltvProp: 'averages.aveSteals' },
+	{ name: 'BLK', gameProp: 'blocks', cmltvProp: 'averages.aveBlocks' },
+	{ name: 'TO', gameProp: 'turnovers', cmltvProp: 'averages.aveTurnovers' },
+	{ name: 'PF', gameProp: 'fouls', cmltvProp: 'averages.aveFouls' },
+	{ name: 'PT', gameProp: 'pointsTotal', cmltvProp: 'averages.avePoints' }
+];
+
+$(function() {
+	//Here's my data model
+	var viewModel = {
+		players: null,
+		errorInfo: ko.observable(''),
+		chartProps: chartProps,
+		allChecked: true,
+		selectedChartProp: ko.observable(chartProps[0]),
+		statType: ko.observable('cumulative'),
+		playersReady: 0
+	};
+	viewModel.toggleAll = function(vm) {
+		$.each(vm.players, function(idx, p) {
+			p.isSelected(vm.allChecked);
+		});
+		refreshChart(vm);
+		return true;
+	};
+	viewModel.playerSelected = function(p) {
+		refreshChart(viewModel);
+		return true;
+	};
+	
+	viewModel.selectedChartProp.subscribe(function(newValue) {
+		refreshChart(viewModel);
+	});
+	viewModel.statType.subscribe(function(newValue) {
+		refreshChart(viewModel);
+	});
+	 
+	refreshData(viewModel);
+});
+
+function refreshData(viewModel) {
+	$.getJSON("json/players.json", function(players) {
+		$('#error').hide();
+		$('#data').show();
+		
+		var c = 0;
+		$.each(players, function(idx, p) {
+			p.isSelected = ko.observable(true);
+			p.color = colors[c++];
+			$.getJSON("json/" + p.gamesUrl, function(gs) {
+				p.games = gs;
+				viewModel.playersReady++;
+				completeInit(viewModel);
+			});
+			$.getJSON("json/" + p.cumulativeUrl, function(cs) {
+				p.cumulative = cs;
+				viewModel.playersReady++;
+				completeInit(viewModel);
+			});
+		});
+		
+		viewModel.players = players;
+		
+	})
+	.fail(function(jqxhr, textStatus, error ) {
+	    
+		$('#data').hide();
+		$('#error').show();
+		
+		viewModel.errorInfo("Status " + jqxhr.status + ": " + error);
+		ko.applyBindings(viewModel);
+	});
+}
+
+function completeInit(viewModel) {
+	if(viewModel.playersReady == 2 * viewModel.players.length) {
+		ko.applyBindings(viewModel);
+		refreshChart(viewModel);
+	}
+}
+
+function refreshChart(viewModel) {
+	var options = {
+		bubbles: {
+			show: true,
+			baseRadius: 5
+		},
+		mouse : {
+			track : true,
+			relative: true,
+			trackFormatter: function(obj) {
+				return obj.y + ' - ' + obj.series.label + ', ' + viewModel.players[0].games.stats[obj.index].opponent;
+			}
+		},
+		xaxis: {
+			min: -1.5,
+			max: 0,
+			ticks: [
+				[1, 'G1'],
+				[5, 'G5'],
+				[10, 'G10'],
+				[15, 'G15'],
+				[20, 'G20'],
+				[25, 'G25'],
+				[30, 'G30'],
+			]
+		},
+		yaxis: {
+			min: 0,
+			max: 0
+		},
+		HtmlText: true,
+		colors: []
+	};
+	
+	var miny = 10000;
+	var maxy = -10000;
+	var chartProps = viewModel.selectedChartProp();
+	var data = [];
+	var showGame = (viewModel.statType() == 'game');
+	$.each(viewModel.players, function(idx,p) {
+		if(!p.isSelected()) {
+			return;
+		}
+		
+		options.colors.push(p.color);
+		var d = {
+			data: [],
+			label: p.lastName,
+			lines: {
+				show: true
+			},
+			points: {
+				show: true
+			}
+		};
+		
+		var stats = showGame
+			? p.games.stats
+			: p.cumulative.stats;
+		var propName = showGame
+			? chartProps.gameProp
+			: chartProps.cmltvProp;
+		$.each(stats, function(idx, s) {
+			var v = $.getObjValue(s, propName);
+			miny = Math.min(miny, v);
+			maxy = Math.max(maxy, v);
+			d.data.push([s.gameNumber, v]);
+		});
+		
+		data.push(d);
+	});
+	
+	options.xaxis.max = (data.length) ? data[0].data.length + 1 : 10;
+	options.yaxis.min = 0.9 * miny;
+	options.yaxis.max = 1.1 * maxy;
+	
+	(function renderChart(container) {
+		Flotr.draw(container, data, options);
+	})(document.getElementById('chart'));
+}
+</script>
+
+</head>
+<body>
+	<nav class="navbar navbar-green navbar-fixed-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="pull-left navbar-toggle navbar-left" data-toggle="collapse" data-target="#navbarLinks">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+			</div>
+			<div id="navbarLinks" class="collapse navbar-collapse">
+				<ul id="navbarList" class="nav navbar-nav">
+				</ul>
+			</div>
+		</div>
+	</nav>
+	
+	<div id="data">
+		<div class="pageTitle">Player Comparison</div>
+		<table class="players">
+			<thead>
+				<tr>
+					<th>
+						<input type="checkbox" data-bind="checked: allChecked, click: toggleAll">
+					</th>
+					<th>NAME</th>
+					<th>&nbsp;</th>
+				</tr>
+			</thead>
+			<tbody data-bind="foreach: players">
+				<tr>
+					<td class="check">
+						<input type="checkbox" data-bind="checked: isSelected, click: $root.playerSelected">
+					</td>
+					<td class="name" data-bind="text: firstName + ' ' + lastName"></td>
+					<td class="color"><div data-bind="style: { backgroundColor: color }"></div></td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<h3>Comparison</h3>
+		<div>
+			<select style="width: 100px" data-bind="options: chartProps, optionsText: 'name', value: selectedChartProp">
+			</select>
+			<span><input type="radio" name="statType" value="cumulative" data-bind="checked: statType" /> Cumulative</span>
+			<span><input type="radio" name="statType" value="game" data-bind="checked: statType" /> Per Game</span>
+			<div id="chart"></div>
+		</div>
+	</div>
+	<div id="error" data-bind="text: errorInfo">
+	</div>
+</body>
+</html>

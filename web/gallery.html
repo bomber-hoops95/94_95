@@ -1,0 +1,215 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <title>RHS</title>
+    <link rel="shortcut icon" href="img/favicon.ico" />
+    <link rel="icon" href="img/favicon.ico">
+    
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link href="css/style.css" rel="stylesheet" />
+	<link href="css/gallery.css" rel="stylesheet" />
+	
+	<link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="lib/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="css/bootstrap-custom.css" rel="stylesheet" />
+        
+    <script type="text/javascript" src="lib/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="lib/knockout-3.4.2.js"></script>
+	<script type="text/javascript" src="lib/knockout.mapping.js"></script>
+    <script type="text/javascript" src="lib/flotr2.min.js"></script>
+	<script type="text/javascript" src="lib/bootstrap/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/nav.js"></script>
+	
+<script type="text/javascript">
+$(function() {
+	var sections = [
+		{
+			name: 'RHS',
+			images: [ {
+					label: 'Team Photo',
+					url: 'img/team.png',
+					thumbUrl: 'img/thumbnail/team.png'
+				}, {
+					label: 'Winter Sport Poster',
+					url: 'img/poster.png',
+					thumbUrl: 'img/thumbnail/poster.png'
+				}, {
+					label: 'Bomber Towel',
+					url: 'img/towel.png',
+					thumbUrl: 'img/thumbnail/towel.png'
+				}
+			]
+		}, {
+			name: 'Regionals',
+			images: [ {
+					label: 'Program Cover',
+					url: 'img/regionals-cover.png',
+					thumbUrl: 'img/thumbnail/regionals-cover.png'
+				}, {
+					label: 'Bombers Profile',
+					url: 'img/regionals-bombers.png',
+					thumbUrl: 'img/thumbnail/regionals-bombers.png'
+				}, {
+					label: 'Tournament Bracket',
+					url: 'img/regionals-bracket.png',
+					thumbUrl: 'img/thumbnail/regionals-bracket.png'
+				}, {
+					label: '1994 Recap',
+					url: 'img/regionals-1994-recap.png',
+					thumbUrl: 'img/thumbnail/regionals-1994-recap.png'
+				}, {
+					label: 'Regionals History',
+					url: 'img/regionals-history.png',
+					thumbUrl: 'img/thumbnail/regionals-history.png'
+				}
+			]
+		}, {
+			name: 'State',
+			images: [ {
+					label: 'Program Cover',
+					url: 'img/state-cover.png',
+					thumbUrl: 'img/thumbnail/state-cover.png'
+				}, {
+					label: 'Bombers Profile',
+					url: 'img/state-bombers.png',
+					thumbUrl: 'img/thumbnail/state-bombers.png'
+				}, {
+					label: 'Conference Season Standings',
+					url: 'img/state-season-standings.png',
+					thumbUrl: 'img/thumbnail/state-season-standings.png'
+				}, {
+					label: 'Tournament Bracket',
+					url: 'img/state-bracket.png',
+					thumbUrl: 'img/thumbnail/state-bracket.png'
+				}, {
+					label: 'History (1)',
+					url: 'img/state-history-1.png',
+					thumbUrl: 'img/thumbnail/state-history-1.png'
+				}, {
+					label: 'History (2)',
+					url: 'img/state-history-2.png',
+					thumbUrl: 'img/thumbnail/state-history-2.png'
+				}, {
+					label: 'History (3)',
+					url: 'img/state-history-3.png',
+					thumbUrl: 'img/thumbnail/state-history-3.png'
+				}, {
+					label: 'History (4)',
+					url: 'img/state-history-4.png',
+					thumbUrl: 'img/thumbnail/state-history-4.png'
+				}, {
+					label: 'History (5)',
+					url: 'img/state-history-5.png',
+					thumbUrl: 'img/thumbnail/state-history-5.png'
+				}, {
+					label: 'Ticket Stub',
+					url: 'img/state-ticket.png',
+					thumbUrl: 'img/thumbnail/state-ticket.png'
+				}
+			]
+		}, {
+			name: 'State - Game 1',
+			images: [ {
+					label: 'Box Score',
+					url: 'img/state-game-1-box.png',
+					thumbUrl: 'img/thumbnail/state-game-1-box.png'
+				}, {
+					label: 'Game Recap',
+					url: 'img/state-game-1-recap.png',
+					thumbUrl: 'img/thumbnail/state-game-1-recap.png'
+				}, {
+					label: 'Bombers Shot Chart',
+					url: 'img/state-game-1-shots-bombers.png',
+					thumbUrl: 'img/thumbnail/state-game-1-shots-bombers.png'
+				}, {
+					label: 'Opponent Shot Chart',
+					url: 'img/state-game-1-shots-opp.png',
+					thumbUrl: 'img/thumbnail/state-game-1-shots-opp.png'
+				}
+			]
+		}, {
+			name: 'State - Game 2',
+			images: [ {
+				label: 'Box Score',
+					url: 'img/state-game-2-box.png',
+					thumbUrl: 'img/thumbnail/state-game-2-box.png'
+				}, {
+					label: 'Game Recap',
+					url: 'img/state-game-2-recap.png',
+					thumbUrl: 'img/thumbnail/state-game-2-recap.png'
+				}, {
+					label: 'Bombers Shot Chart',
+					url: 'img/state-game-2-shots-bombers.png',
+					thumbUrl: 'img/thumbnail/state-game-2-shots-bombers.png'
+				}, {
+					label: 'Opponent Shot Chart',
+					url: 'img/state-game-2-shots-opp.png',
+					thumbUrl: 'img/thumbnail/state-game-2-shots-opp.png'
+				}
+			]
+		}, {
+			name: 'State - Game 3',
+			images: [ {
+					label: 'Box Score',
+					url: 'img/state-game-3-box.png',
+					thumbUrl: 'img/thumbnail/state-game-3-box.png'
+				}, {
+					label: 'Game Recap',
+					url: 'img/state-game-3-recap.png',
+					thumbUrl: 'img/thumbnail/state-game-3-recap.png'
+				}, {
+					label: 'Bombers Shot Chart',
+					url: 'img/state-game-3-shots-bombers.png',
+					thumbUrl: 'img/thumbnail/state-game-3-shots-bombers.png'
+				}, {
+					label: 'Opponent Shot Chart',
+					url: 'img/state-game-3-shots-opp.png',
+					thumbUrl: 'img/thumbnail/state-game-3-shots-opp.png'
+				}
+			]
+		}
+	];
+	var viewModel = {
+		sections: sections
+	};
+	
+	ko.applyBindings(viewModel);
+});
+</script>
+
+</head>
+<body>
+	<nav class="navbar navbar-green navbar-fixed-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="pull-left navbar-toggle navbar-left" data-toggle="collapse" data-target="#navbarLinks">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+			</div>
+			<div id="navbarLinks" class="collapse navbar-collapse">
+				<ul id="navbarList" class="nav navbar-nav">
+				</ul>
+			</div>
+		</div>
+	</nav>
+	
+	<div id="data">
+		<div class="sections" data-bind="foreach: sections">
+			<div class="section">
+				<div class="sectionHdr" data-bind="text: name"></div>
+				<div class="images" data-bind="foreach: images">
+					<div class="image">
+						<a data-bind="attr: { href: url, title: label }" target="_new"><img data-bind="attr: { src: thumbUrl, alt: label }"></a>
+						<br>
+						<div data-bind="text: label"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

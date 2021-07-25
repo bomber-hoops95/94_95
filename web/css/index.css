@@ -1,0 +1,58 @@
+#teamRecord {
+	text-align: center;
+	font-size: 28pt;
+	color: #006322;
+	margin: 0px;
+}
+#teamRecord h1 {
+	margin: 15px 0px 25px 0px;
+}
+#gameList {
+	margin-left: 3px;
+	margin-right: 3px;
+}
+
+.posterThumb {
+	float: left;
+	padding-left: 15px;
+	height: 90px;
+}
+
+.game {
+	margin-top: 15px;
+	border-top: 1px solid #006322;
+}
+.game .score {
+	display: inline-block;
+	width: 350px;
+}
+.game .bombers {
+	font-size: 16pt;
+	color: #006322;
+}
+.game .opponent {
+	font-size: 13pt;
+}
+.game .gameDate {
+	margin: 2px 0 5px 0;
+	font-size: 11pt;
+	font-weight: bold;
+	color: #7a7a7a;
+}
+.game .score div div {
+	display: inline-block;
+}
+.game .score div .teamName {
+	width: 250px;
+}
+.game .score div .score {
+	width: 25px;
+}
+.game .links {
+	display: inline-block;
+	border-left: 1px solid lightgray;
+	vertical-align: middle;
+	padding-left: 10px;
+	height: 60px;
+	font-size: 10pt;
+}

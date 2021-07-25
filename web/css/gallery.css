@@ -1,0 +1,29 @@
+.sections {
+	padding: 10px;
+	margin-bottom: 10px;
+}
+.section {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+.sectionHdr {
+	padding: 3px 8px;
+	background-color: #006322;
+	color: white;
+	font-weight: bold;
+	font-size: 12pt;
+}
+.images {
+	margin: 5px 0px;
+}
+.image {
+	display: inline-block;
+	margin-right: 5px;
+}
+.image div {
+	font-size: 11pt;
+	font-weight: bold;
+	text-align: center;
+	margin-top: 4px;
+}
+

@@ -1,0 +1,469 @@
+{
+   "scoresAgainst" : [
+      {
+         "quarter" : "1",
+         "totalSeconds" : 6,
+         "name" : "McCloud",
+         "score" : "3",
+         "timeRemaining" : "7:54"
+      },
+      {
+         "quarter" : "1",
+         "totalSeconds" : 93,
+         "name" : "Carlisle",
+         "score" : "5",
+         "timeRemaining" : "6:27"
+      },
+      {
+         "name" : "Carlisle",
+         "totalSeconds" : 168,
+         "quarter" : "1",
+         "timeRemaining" : "5:12",
+         "score" : "6"
+      },
+      {
+         "score" : "7",
+         "timeRemaining" : "4:03",
+         "quarter" : "1",
+         "totalSeconds" : 237,
+         "name" : "Carlisle"
+      },
+      {
+         "timeRemaining" : "3:36",
+         "score" : "8",
+         "name" : "McCloud",
+         "quarter" : "1",
+         "totalSeconds" : 264
+      },
+      {
+         "totalSeconds" : 264,
+         "quarter" : "1",
+         "name" : "McCloud",
+         "score" : "9",
+         "timeRemaining" : "3:36"
+      },
+      {
+         "quarter" : "1",
+         "totalSeconds" : 340,
+         "name" : "Wright",
+         "score" : "12",
+         "timeRemaining" : "2:20"
+      },
+      {
+         "timeRemaining" : "1:34",
+         "score" : "14",
+         "name" : "Turping",
+         "quarter" : "1",
+         "totalSeconds" : 386
+      },
+      {
+         "quarter" : "1",
+         "totalSeconds" : 401,
+         "name" : "Turping",
+         "score" : "16",
+         "timeRemaining" : "1:19"
+      },
+      {
+         "score" : "18",
+         "timeRemaining" : "0:51",
+         "quarter" : "1",
+         "totalSeconds" : 429,
+         "name" : "Carlisle"
+      },
+      {
+         "name" : "Williamson",
+         "quarter" : "2",
+         "totalSeconds" : 530,
+         "timeRemaining" : "7:10",
+         "score" : "20"
+      },
+      {
+         "name" : "Williamson",
+         "totalSeconds" : 530,
+         "quarter" : "2",
+         "timeRemaining" : "7:10",
+         "score" : "21"
+      },
+      {
+         "name" : "Williamson",
+         "quarter" : "2",
+         "totalSeconds" : 572,
+         "timeRemaining" : "6:28",
+         "score" : "24"
+      },
+      {
+         "totalSeconds" : 646,
+         "quarter" : "2",
+         "name" : "Carlisle",
+         "score" : "26",
+         "timeRemaining" : "5:14"
+      },
+      {
+         "timeRemaining" : "4:43",
+         "score" : "27",
+         "name" : "McCloud",
+         "totalSeconds" : 677,
+         "quarter" : "2"
+      },
+      {
+         "timeRemaining" : "4:02",
+         "score" : "29",
+         "name" : "Carlisle",
+         "totalSeconds" : 718,
+         "quarter" : "2"
+      },
+      {
+         "name" : "Eakin",
+         "totalSeconds" : 786,
+         "quarter" : "2",
+         "timeRemaining" : "2:54",
+         "score" : "31"
+      },
+      {
+         "score" : "33",
+         "timeRemaining" : "0:41",
+         "totalSeconds" : 919,
+         "quarter" : "2",
+         "name" : "Carlisle"
+      },
+      {
+         "quarter" : "3",
+         "totalSeconds" : 1063,
+         "name" : "Carlisle",
+         "score" : "34",
+         "timeRemaining" : "6:17"
+      },
+      {
+         "timeRemaining" : "5:21",
+         "score" : "36",
+         "name" : "Turping",
+         "quarter" : "3",
+         "totalSeconds" : 1119
+      },
+      {
+         "totalSeconds" : 1168,
+         "quarter" : "3",
+         "name" : "Carlisle",
+         "score" : "38",
+         "timeRemaining" : "4:32"
+      },
+      {
+         "score" : "40",
+         "timeRemaining" : "2:27",
+         "quarter" : "3",
+         "totalSeconds" : 1293,
+         "name" : "McCloud"
+      },
+      {
+         "timeRemaining" : "2:05",
+         "score" : "42",
+         "name" : "Robinson",
+         "totalSeconds" : 1315,
+         "quarter" : "3"
+      },
+      {
+         "name" : "McCloud",
+         "quarter" : "3",
+         "totalSeconds" : 1346,
+         "timeRemaining" : "1:34",
+         "score" : "44"
+      },
+      {
+         "score" : "46",
+         "timeRemaining" : "0:49",
+         "totalSeconds" : 1391,
+         "quarter" : "3",
+         "name" : "McCloud"
+      },
+      {
+         "name" : "McCloud",
+         "totalSeconds" : 1458,
+         "quarter" : "4",
+         "timeRemaining" : "7:42",
+         "score" : "49"
+      },
+      {
+         "quarter" : "4",
+         "totalSeconds" : 1494,
+         "name" : "Williamson",
+         "score" : "51",
+         "timeRemaining" : "7:06"
+      },
+      {
+         "score" : "53",
+         "timeRemaining" : "5:50",
+         "quarter" : "4",
+         "totalSeconds" : 1570,
+         "name" : "Carlisle"
+      },
+      {
+         "quarter" : "4",
+         "totalSeconds" : 1762,
+         "name" : "Carlisle",
+         "score" : "55",
+         "timeRemaining" : "2:38"
+      },
+      {
+         "score" : "56",
+         "timeRemaining" : "1:46",
+         "totalSeconds" : 1814,
+         "quarter" : "4",
+         "name" : "Williamson"
+      },
+      {
+         "timeRemaining" : "1:46",
+         "score" : "57",
+         "name" : "Williamson",
+         "totalSeconds" : 1814,
+         "quarter" : "4"
+      },
+      {
+         "quarter" : "4",
+         "totalSeconds" : 1920,
+         "name" : null,
+         "score" : "57",
+         "timeRemaining" : "0:00"
+      }
+   ],
+   "opponent" : "Kamiakin Braves",
+   "scoresFor" : [
+      {
+         "timeRemaining" : "6:10",
+         "score" : "2",
+         "name" : "Bone",
+         "totalSeconds" : 110,
+         "quarter" : "1"
+      },
+      {
+         "totalSeconds" : 194,
+         "quarter" : "1",
+         "name" : "Cahill",
+         "score" : "4",
+         "timeRemaining" : "4:46"
+      },
+      {
+         "score" : "7",
+         "timeRemaining" : "3:44",
+         "totalSeconds" : 256,
+         "quarter" : "1",
+         "name" : "Ash"
+      },
+      {
+         "totalSeconds" : 291,
+         "quarter" : "1",
+         "name" : "Spohr",
+         "score" : "9",
+         "timeRemaining" : "3:09"
+      },
+      {
+         "name" : "Schulz",
+         "totalSeconds" : 328,
+         "quarter" : "1",
+         "timeRemaining" : "2:32",
+         "score" : "11"
+      },
+      {
+         "quarter" : "2",
+         "totalSeconds" : 493,
+         "name" : "Schulz",
+         "score" : "13",
+         "timeRemaining" : "7:47"
+      },
+      {
+         "timeRemaining" : "7:19",
+         "score" : "15",
+         "name" : "Schulz",
+         "totalSeconds" : 521,
+         "quarter" : "2"
+      },
+      {
+         "name" : "Buck",
+         "totalSeconds" : 540,
+         "quarter" : "2",
+         "timeRemaining" : "7:00",
+         "score" : "16"
+      },
+      {
+         "quarter" : "2",
+         "totalSeconds" : 540,
+         "name" : "Buck",
+         "score" : "17",
+         "timeRemaining" : "7:00"
+      },
+      {
+         "timeRemaining" : "7:00",
+         "score" : "18",
+         "name" : "Buck",
+         "totalSeconds" : 540,
+         "quarter" : "2"
+      },
+      {
+         "timeRemaining" : "5:33",
+         "score" : "21",
+         "name" : "Buck",
+         "quarter" : "2",
+         "totalSeconds" : 627
+      },
+      {
+         "score" : "22",
+         "timeRemaining" : "5:02",
+         "quarter" : "2",
+         "totalSeconds" : 658,
+         "name" : "Ash"
+      },
+      {
+         "score" : "23",
+         "timeRemaining" : "3:16",
+         "totalSeconds" : 764,
+         "quarter" : "2",
+         "name" : "Cahill"
+      },
+      {
+         "timeRemaining" : "3:16",
+         "score" : "24",
+         "name" : "Cahill",
+         "totalSeconds" : 764,
+         "quarter" : "2"
+      },
+      {
+         "name" : "Spohr",
+         "quarter" : "2",
+         "totalSeconds" : 869,
+         "timeRemaining" : "1:31",
+         "score" : "26"
+      },
+      {
+         "name" : "Spohr",
+         "quarter" : "2",
+         "totalSeconds" : 958,
+         "timeRemaining" : "0:02",
+         "score" : "29"
+      },
+      {
+         "timeRemaining" : "7:27",
+         "score" : "31",
+         "name" : "Spohr",
+         "totalSeconds" : 993,
+         "quarter" : "3"
+      },
+      {
+         "name" : "Spohr",
+         "totalSeconds" : 1146,
+         "quarter" : "3",
+         "timeRemaining" : "4:54",
+         "score" : "33"
+      },
+      {
+         "name" : "Schulz",
+         "quarter" : "3",
+         "totalSeconds" : 1193,
+         "timeRemaining" : "4:07",
+         "score" : "35"
+      },
+      {
+         "timeRemaining" : "3:20",
+         "score" : "37",
+         "name" : "Cahill",
+         "quarter" : "3",
+         "totalSeconds" : 1240
+      },
+      {
+         "name" : "Cahill",
+         "totalSeconds" : 1331,
+         "quarter" : "3",
+         "timeRemaining" : "1:49",
+         "score" : "39"
+      },
+      {
+         "name" : "Schulz",
+         "quarter" : "3",
+         "totalSeconds" : 1379,
+         "timeRemaining" : "1:01",
+         "score" : "41"
+      },
+      {
+         "timeRemaining" : "0:49",
+         "score" : "42",
+         "name" : "Robertson",
+         "totalSeconds" : 1391,
+         "quarter" : "3"
+      },
+      {
+         "totalSeconds" : 1391,
+         "quarter" : "3",
+         "name" : "Robertson",
+         "score" : "43",
+         "timeRemaining" : "0:49"
+      },
+      {
+         "score" : "45",
+         "timeRemaining" : "0:39",
+         "totalSeconds" : 1401,
+         "quarter" : "3",
+         "name" : "Schulz"
+      },
+      {
+         "name" : "Robertson",
+         "quarter" : "3",
+         "totalSeconds" : 1438,
+         "timeRemaining" : "0:02",
+         "score" : "48"
+      },
+      {
+         "score" : "50",
+         "timeRemaining" : "7:30",
+         "totalSeconds" : 1470,
+         "quarter" : "4",
+         "name" : "Schulz"
+      },
+      {
+         "totalSeconds" : 1587,
+         "quarter" : "4",
+         "name" : "Schulz",
+         "score" : "52",
+         "timeRemaining" : "5:33"
+      },
+      {
+         "timeRemaining" : "5:19",
+         "score" : "54",
+         "name" : "Spohr",
+         "totalSeconds" : 1601,
+         "quarter" : "4"
+      },
+      {
+         "timeRemaining" : "3:02",
+         "score" : "57",
+         "name" : "Robertson",
+         "quarter" : "4",
+         "totalSeconds" : 1738
+      },
+      {
+         "name" : "Schulz",
+         "totalSeconds" : 1841,
+         "quarter" : "4",
+         "timeRemaining" : "1:19",
+         "score" : "59"
+      },
+      {
+         "name" : "Cahill",
+         "totalSeconds" : 1903,
+         "quarter" : "4",
+         "timeRemaining" : "0:17",
+         "score" : "60"
+      },
+      {
+         "score" : "61",
+         "timeRemaining" : "0:03",
+         "quarter" : "4",
+         "totalSeconds" : 1917,
+         "name" : "Schulz"
+      },
+      {
+         "quarter" : "4",
+         "totalSeconds" : 1920,
+         "name" : null,
+         "score" : "61",
+         "timeRemaining" : "0:00"
+      }
+   ]
+}

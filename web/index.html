@@ -1,0 +1,107 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <title>RHS</title>
+    <link rel="shortcut icon" href="img/favicon.ico" />
+    <link rel="icon" href="img/favicon.ico">
+    
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link href="css/style.css" rel="stylesheet" />
+	<link href="css/index.css" rel="stylesheet" />
+	
+	<link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="lib/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="css/bootstrap-custom.css" rel="stylesheet" />
+        
+    <script type="text/javascript" src="lib/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="lib/knockout-3.4.2.js"></script>
+	<script type="text/javascript" src="lib/knockout.mapping.js"></script>
+    <script type="text/javascript" src="lib/flotr2.min.js"></script>
+	<script type="text/javascript" src="lib/bootstrap/js/bootstrap.min.js"></script>
+	
+	<script type="text/javascript" src="js/nav.js"></script>
+	
+<script type="text/javascript">
+$(function() {
+	//Here's my data model
+	var viewModel = {
+		gameIndex: null,
+		errorInfo: ko.observable('')
+	};
+	 
+	refreshData(viewModel);
+});
+
+function refreshData(viewModel) {
+	$.getJSON("json/gameindex.json", function(gamesIndex) {
+		$('#error').hide();
+		$('#data').show();
+		
+		viewModel.gameIndex = ko.mapping.fromJS(gamesIndex);
+		ko.applyBindings(viewModel);
+	})
+	.fail(function(jqxhr, textStatus, error ) {
+	    
+		$('#data').hide();
+		$('#error').show();
+		
+		viewModel.errorInfo("Status " + jqxhr.status + ": " + error);
+		ko.applyBindings(viewModel);
+	});
+}
+</script>
+
+</head>
+<body>
+	<nav class="navbar navbar-green navbar-fixed-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="pull-left navbar-toggle navbar-left" data-toggle="collapse" data-target="#navbarLinks">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+			</div>
+			<div id="navbarLinks" class="collapse navbar-collapse">
+				<ul id="navbarList" class="nav navbar-nav">
+				</ul>
+			</div>
+		</div>
+	</nav>
+	
+	<div id="data">
+		<div id="teamRecord">
+			<div class="pageTitle">Richland Bombers Boys Basketball 94-95</div>
+			<h1>
+				<span data-bind="text: gameIndex.wins"></span> -
+				<span data-bind="text: gameIndex.losses"></span>
+			</h1>
+		</div>
+		<div id="gameList" data-bind="foreach: gameIndex.games">
+			<div class="game">
+				<div class="score">
+					<div class="gameDate" data-bind="text: date"></div>
+					<div class="bombers">
+						<div class="teamName">Richland Bombers</div>
+						<div class="score" data-bind="text: scoreFor"></div>
+						<div data-bind="text: winLoss"></div>
+					</div>
+					<div class="opponent">
+						<div class="teamName" data-bind="text: opponent"></div>
+						<div class="score" data-bind="text: scoreAgainst"></div>
+					</div>
+				</div>
+				<div class="links">
+					<div data-bind="text: location"></div>
+					<div data-bind="text: gameDetail"></div>
+					<a data-bind="attr: { href: 'boxscore.html?gameNum=' + gameNumber() }">Box Score</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="error" data-bind="text: errorInfo">
+	</div>
+</body>
+</html>
