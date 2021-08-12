@@ -9,18 +9,20 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <link href="css/style.css" rel="stylesheet" />
+    <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="lib/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" />
+	<link rel="stylesheet" type="text/css" href="lib/green-audio/css/green-audio-player.min.css">
+    <link href="css/bootstrap-custom.css" rel="stylesheet" />
+
+	<link href="css/style.css" rel="stylesheet" />
 	<link href="css/boxscore.css" rel="stylesheet" />
 	
-	<link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="lib/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" />
-    <link href="css/bootstrap-custom.css" rel="stylesheet" />
-        
-    <script type="text/javascript" src="lib/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="lib/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="lib/knockout-3.4.2.js"></script>
 	<script type="text/javascript" src="lib/knockout.mapping.js"></script>
     <script type="text/javascript" src="lib/flotr2.min.js"></script>
 	<script type="text/javascript" src="lib/bootstrap/js/bootstrap.min.js"></script>
+	<script src="lib/green-audio/js/green-audio-player.min.js"></script>
 	
 	<script type="text/javascript" src="js/helpers.js"></script>
 	<script type="text/javascript" src="js/nav.js"></script>
@@ -72,6 +74,8 @@ function loadGameData(viewModel) {
 
 function loadGameAudio(viewModel) {
 	if(viewModel.info.audioFileName()) {
+		var gplayer = new GreenAudioPlayer('#gameAudio', { showDownloadButton: true });
+
 		$('#gameAudioSource').attr('src', 'audio/' + viewModel.info.audioFileName());
 		$('#gameAudioPlayer')[0].load();
 	}
@@ -349,11 +353,14 @@ function flowTimeCompare(a, b) {
 			</tfoot>
 		</table>
 
-		<div id="gameAudio" data-bind="visible: info.audioFileName != null">
-			<audio id="gameAudioPlayer" controls>
-				<source id="gameAudioSource" type="audio/mpeg">
-				Your browser does not support the audio element.
-			</audio> 
+		<div id="gameAudioContainer" data-bind="visible: info.audioFileName != null">
+			<h3>Radio Broadcast</h3>
+			<div id="gameAudio">
+				<audio id="gameAudioPlayer">
+					<source id="gameAudioSource" type="audio/mpeg">
+					Your browser does not support the audio element.
+				</audio> 
+			</div>
 		</div>
 		
 		<div id="gameFlow" data-bind="visible: flow != null">

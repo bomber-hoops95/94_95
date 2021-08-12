@@ -42,12 +42,8 @@ tfoot tr td {
 	margin-bottom: 0px;
 }
 
-#gameAudio {
+#gameAudioContainer {
 	margin-top: 1em;
-}
-
-#gameAudio audio {
-	width: 95%;
 }
 
 #gameFlow {
@@ -71,4 +67,13 @@ tfoot tr td {
 .eoq div {
 	padding: 5px 0px;
 	text-align: center;
+}
+
+.green-audio-player {
+	box-shadow: none;
+	width: 800px;
+}
+
+.green-audio-player .slider .gap-progress .pin {
+	background-color: #006322;
 }
