@@ -51,6 +51,8 @@ function loadGameData(viewModel) {
 		
 		game.players.sort(playerStatCompareDesc);
 		viewModel.info = ko.mapping.fromJS(game);
+
+		loadGameAudio(viewModel);
 		if(game.gameFlowUrl) {
 			loadGameFlowData(viewModel, game, game.gameFlowUrl);
 		}
@@ -66,6 +68,13 @@ function loadGameData(viewModel) {
 		viewModel.errorInfo("Status " + jqxhr.status + ": " + error);
 		ko.applyBindings(viewModel);
 	});
+}
+
+function loadGameAudio(viewModel) {
+	if(viewModel.info.audioFileName()) {
+		$('#gameAudioSource').attr('src', 'audio/' + viewModel.info.audioFileName());
+		$('#gameAudioPlayer')[0].load();
+	}
 }
 
 function loadGameFlowData(viewModel, game, flowUrl) {
@@ -339,6 +348,13 @@ function flowTimeCompare(a, b) {
 				</tr>
 			</tfoot>
 		</table>
+
+		<div id="gameAudio" data-bind="visible: info.audioFileName != null">
+			<audio id="gameAudioPlayer" controls>
+				<source id="gameAudioSource" type="audio/mpeg">
+				Your browser does not support the audio element.
+			</audio> 
+		</div>
 		
 		<div id="gameFlow" data-bind="visible: flow != null">
 			<h3>Game Flow</h3>

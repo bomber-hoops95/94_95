@@ -94,6 +94,7 @@ foreach my $inFile (sort @gameFiles)
 	my $gameDetail = $sheet->{cell}[3][1];
 	my $location = $sheet->{cell}[4][1];
 	my $gameDate = $sheet->{cell}[5][1];
+	my $audioFileName = $sheet->{cell}[6][1];
 	my %headers;
 	
 	$gameDetail =~ /([\w\s]+)/i;
@@ -117,7 +118,8 @@ foreach my $inFile (sort @gameFiles)
 		'date' => $gameDate,
 		'winLoss' => '',
 		'gameFlowUrl' => $flowFileName,
-		'players' => []
+		'players' => [],
+		'audioFileName' => $audioFileName
 	);
 
 	for(my $i = 3; $i <= $sheet->{maxrow}; $i++)
@@ -187,7 +189,8 @@ foreach my $inFile (sort @gameFiles)
 		'scoreFor' => $output{'teamTotals'}->{'pointsTotal'},
 		'scoreAgainst' => $opponentScore,
 		'gameJson' =>  $jsonFileName,
-		'winLoss' => ($output{'teamTotals'}->{'pointsTotal'} > $opponentScore) ? 'W' : 'L'
+		'winLoss' => ($output{'teamTotals'}->{'pointsTotal'} > $opponentScore) ? 'W' : 'L',
+		'audioFileName' => $audioFileName
 	);
 	push @games, \%gi;
 	

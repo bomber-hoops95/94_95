@@ -42,6 +42,14 @@ tfoot tr td {
 	margin-bottom: 0px;
 }
 
+#gameAudio {
+	margin-top: 1em;
+}
+
+#gameAudio audio {
+	width: 95%;
+}
+
 #gameFlow {
 	margin-top: 1em;
 }

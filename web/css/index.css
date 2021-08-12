@@ -56,3 +56,8 @@
 	height: 60px;
 	font-size: 10pt;
 }
+
+.game .links .audioIcon {
+	width: 20px;
+	margin-left: 5px;
+}

@@ -97,6 +97,7 @@ function refreshData(viewModel) {
 					<div data-bind="text: location"></div>
 					<div data-bind="text: gameDetail"></div>
 					<a data-bind="attr: { href: 'boxscore.html?gameNum=' + gameNumber() }">Box Score</a>
+					<img data-bind="visible: audioFileName() != null" src="img/audio.png" class="audioIcon">
 				</div>
 			</div>
 		</div>
