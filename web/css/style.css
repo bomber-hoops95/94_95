@@ -47,3 +47,10 @@ tbody > tr:nth-child(odd) {
 th, td {
 	padding: 0 4px !important;
 }
+
+.navbar-logo {
+	margin-top: -10px;
+}
+.navbar-logo img {
+	height: 40px;
+}

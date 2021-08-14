@@ -24,7 +24,7 @@
 }
 .game .score {
 	display: inline-block;
-	width: 350px;
+	width: 320px;
 }
 .game .bombers {
 	font-size: 16pt;
