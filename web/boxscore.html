@@ -356,7 +356,7 @@ function flowTimeCompare(a, b) {
 			</tfoot>
 		</table>
 
-		<div id="gameAudioContainer" data-bind="visible: info.audioFileName != null">
+		<div id="gameAudioContainer" data-bind="visible: info.audioFileName() != null">
 			<h3>Radio Broadcast</h3>
 			<div id="gameAudio">
 				<audio id="gameAudioPlayer">
